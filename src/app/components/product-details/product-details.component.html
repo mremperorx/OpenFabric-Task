@@ -1,0 +1,86 @@
+<div *ngIf="viewMode; else editable">
+    <div *ngIf="currentProduct.id">
+      <h4>Product</h4>
+      <div>
+        <label><strong>Title:</strong></label> {{ currentProduct.title }}
+      </div>
+      <div>
+        <label><strong>Description:</strong></label>
+        {{ currentProduct.description }}
+      </div>
+      <div>
+        <label><strong>Status:</strong></label>
+        {{ currentProduct.published ? "out of stock" : "in stock" }}
+      </div>
+      <a
+        class="btn btn-warning"
+        routerLink="/products/{{ currentProduct.id }}"
+      >
+        Edit
+      </a>
+    </div>
+    <div *ngIf="!currentProduct">
+      <br />
+      <p>Please click on a Product...</p>
+    </div>
+  </div>
+  <ng-template #editable>
+    <div *ngIf="currentProduct.id" class="edit-form">
+      <h4>Product</h4>
+      <form>
+        <div class="form-group mb-3">
+          <label for="title" class="mb-2">Title</label>
+          <input
+            type="text"
+            class="form-control"
+            id="title"
+            [(ngModel)]="currentProduct.title"
+            name="title"
+          />
+        </div>
+        <div class="form-group mb-3">
+          <label for="description" class="mb-2">Description</label>
+          <input
+            type="text"
+            class="form-control"
+            id="description"
+            [(ngModel)]="currentProduct.description"
+            name="description"
+          />
+        </div>
+        <div class="form-group mb-5">
+          <label><strong>Status:</strong></label>
+          {{ currentProduct.published ? "out of stock" : "in stock" }}
+        </div>
+      </form>
+      <button
+        class="btn btn-primary me-2 mb-2"
+        *ngIf="currentProduct.published"
+        (click)="updatePublished(false)"
+      >
+        in stock
+      </button>
+      <button
+        *ngIf="!currentProduct.published"
+        class="btn btn-primary me-2 mb-2"
+        (click)="updatePublished(true)"
+      >
+      out of stock
+      </button>
+      <button class="btn btn-danger me-2 mb-2" (click)="deleteProduct()">
+        Delete
+      </button>
+      <button
+        type="submit"
+        class="btn btn-success mb-2"
+        (click)="updateProduct()"
+      >
+        Update
+      </button>
+      <p>{{ message }}</p>
+    </div>
+    <div *ngIf="!currentProduct.id">
+      <br />
+      <p>Cannot access this Product...</p>
+    </div>
+  </ng-template>
